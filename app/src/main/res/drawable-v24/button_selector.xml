@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:state_pressed="true">
+            <!-- Define the desired background or tint color for the pressed state -->
+            <color android:color="@android:color/darker_gray" />
+        </item>
+        <item>
+            <!-- Define the default background or tint color -->
+            <color android:color="@android:color/transparent" />
+        </item>
+    </selector>
