@@ -1,22 +1,20 @@
 package com.example.selectionapp;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.neurosky.AlgoSdk.NskAlgoDataType;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoState;
@@ -25,7 +23,6 @@ import com.neurosky.connection.ConnectionStates;
 import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,13 +44,16 @@ public class MainActivity extends AppCompatActivity {
     Button mainImage;
     private boolean buttonClicked = false;
     private boolean startAction = false;
+    private boolean firstButtonClicked= false;
     private short raw_data[] = {0};
     private int raw_data_index = 0;
     private TextView connectionStatus;
-    private static final int REQUEST_BLUETOOTH_PERMISSION = 1;
     double realtimerange, goodmin, goodmax, badmin, badmax;
     List<ImageButton> imageButtons = new ArrayList<>();
     int currentIndex = 0;
+    LinearLayout linearLayout;
+    ImageButton dailyActivity , sick,command, entertainment,imgSubBtn3, imgSubBtn1,imgSubBtn2,imgSubBtn4;
+    TextView subTxt1,subTxt2, subTxt3,subTxt4;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -61,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainImage = findViewById(R.id.button);
+        imgSubBtn1 = findViewById(R.id.imgsub1);
+        imgSubBtn2 = findViewById(R.id.imgSub2);
+        imgSubBtn3 = findViewById(R.id.imgSub3);
+        imgSubBtn4 = findViewById(R.id.imgSub4);
+        subTxt1 = findViewById(R.id.txtsub1);
+        subTxt2 = findViewById(R.id.txtsub2);
+        subTxt3 = findViewById(R.id.txtsub3);
+        subTxt4 = findViewById(R.id.txtsub4);
+         linearLayout = findViewById(R.id.LinearLayout);
         connectionStatus = findViewById(R.id.connectionStatus);
         goodAvg = getResources().openRawResource(R.raw.good);
         BufferedReader reader = new BufferedReader(new InputStreamReader(goodAvg));
@@ -146,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         nskAlgoSdk = new NskAlgoSdk();
-        Log.e("TAG","test ");
 
         nskAlgoSdk.setOnStateChangeListener((state, reason) -> {
             String stateStr = "";
@@ -187,117 +195,95 @@ public class MainActivity extends AppCompatActivity {
                     connectionStatus.setText("analyzing");
                 } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_INITED.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_UNINTIED.value) {
                     connectionStatus.setText("inited");
+
                 }
             });
         });
 
 
         mainImage.setOnClickListener(view -> {
-
             setContentView(R.layout.home);
             buttonClicked = true;
             raw_data_index = 0;
-            ImageButton dailyActivity = findViewById(R.id.DailyActivity);
-            ImageButton sick = findViewById(R.id.Sick);
-            ImageButton command = findViewById(R.id.Command);
-            ImageButton entertainment = findViewById(R.id.Entertainment);
+            dailyActivity = findViewById(R.id.DailyActivity);
+            sick = findViewById(R.id.Sick);
+            command = findViewById(R.id.Command);
+            entertainment = findViewById(R.id.Entertainment);
+
             dailyActivity.setImageResource(R.drawable.dailyactivity);
             sick.setImageResource(R.drawable.sick);
             command.setImageResource(R.drawable.help);
             entertainment.setImageResource(R.drawable.entertainment);
 
-            ImageButton imgSubBtn1 = findViewById(R.id.imgsub1);
-            ImageButton imgSubBtn2 = findViewById(R.id.imgSub2);
-            ImageButton imgSubBtn3 = findViewById(R.id.imgSub3);
-            ImageButton imgSubBtn4 = findViewById(R.id.imgSub4);
-            TextView subTxt1 = findViewById(R.id.txtsub1);
-            TextView subTxt2 = findViewById(R.id.txtsub2);
-            TextView subTxt3 = findViewById(R.id.txtsub3);
-            TextView subTxt4 = findViewById(R.id.txtsub4);
-            imageButtons.add(dailyActivity);
-            imageButtons.add(sick);
-            imageButtons.add(command);
-            imageButtons.add(entertainment);
 
 
             dailyActivity.setOnClickListener(dailyView -> {
-                imgSubBtn1.setVisibility(View.VISIBLE);
-                imgSubBtn2.setVisibility(View.VISIBLE);
-                imgSubBtn3.setVisibility(View.VISIBLE);
-                imgSubBtn4.setVisibility(View.VISIBLE);
-                subTxt1.setVisibility(View.VISIBLE);
-                subTxt2.setVisibility(View.VISIBLE);
-                subTxt3.setVisibility(View.VISIBLE);
-                subTxt4.setVisibility(View.VISIBLE);
-                imgSubBtn1.setImageResource(R.drawable.food);
-                imgSubBtn2.setImageResource(R.drawable.bathroom);
-                imgSubBtn3.setImageResource(R.drawable.cloth);
-                imgSubBtn4.setImageResource(R.drawable.temperature);
-                subTxt1.setText("음식");
-                subTxt2.setText("화장실");
-                subTxt3.setText("옷");
-                subTxt4.setText("온도");
-
-
+                dailyAction();
             });
+
+
             sick.setOnClickListener(sickView -> {
-                imgSubBtn1.setVisibility(View.VISIBLE);
-                imgSubBtn2.setVisibility(View.VISIBLE);
-                imgSubBtn3.setVisibility(View.VISIBLE);
-                imgSubBtn4.setVisibility(View.VISIBLE);
-                subTxt1.setVisibility(View.VISIBLE);
-                subTxt2.setVisibility(View.VISIBLE);
-                subTxt3.setVisibility(View.VISIBLE);
-                subTxt4.setVisibility(View.VISIBLE);
-                imgSubBtn1.setImageResource(R.drawable.headache);
-                imgSubBtn2.setImageResource(R.drawable.leg);
-                imgSubBtn3.setImageResource(R.drawable.heart);
-                imgSubBtn4.setImageResource(R.drawable.throat);
-                subTxt1.setText("머리");
-                subTxt2.setText("다리");
-                subTxt3.setText("심장");
-                subTxt4.setText("목");
+              Sick();
             });
 
             command.setOnClickListener(commandView -> {
-                imgSubBtn1.setVisibility(View.VISIBLE);
-                imgSubBtn2.setVisibility(View.VISIBLE);
-                imgSubBtn3.setVisibility(View.VISIBLE);
-                imgSubBtn4.setVisibility(View.VISIBLE);
-                subTxt1.setVisibility(View.VISIBLE);
-                subTxt2.setVisibility(View.VISIBLE);
-                subTxt3.setVisibility(View.VISIBLE);
-                subTxt4.setVisibility(View.VISIBLE);
-                imgSubBtn1.setImageResource(R.drawable.light);
-                imgSubBtn2.setImageResource(R.drawable.clean);
-                imgSubBtn3.setImageResource(R.drawable.window);
-                imgSubBtn4.setImageResource(R.drawable.bug);
-                subTxt1.setText("불");
-                subTxt2.setText("정소");
-                subTxt3.setText("장문");
-                subTxt4.setText("벌레");
+            command();
             });
 
             entertainment.setOnClickListener(entertainmentView -> {
-                imgSubBtn1.setVisibility(View.VISIBLE);
-                imgSubBtn2.setVisibility(View.VISIBLE);
-                imgSubBtn3.setVisibility(View.VISIBLE);
-                imgSubBtn4.setVisibility(View.VISIBLE);
-                subTxt1.setVisibility(View.VISIBLE);
-                subTxt2.setVisibility(View.VISIBLE);
-                subTxt3.setVisibility(View.VISIBLE);
-                subTxt4.setVisibility(View.VISIBLE);
-                imgSubBtn1.setImageResource(R.drawable.walk);
-                imgSubBtn2.setImageResource(R.drawable.game);
-                imgSubBtn3.setImageResource(R.drawable.music);
-                imgSubBtn4.setImageResource(R.drawable.tv);
-                subTxt1.setText("산책");
-                subTxt2.setText("겔임");
-                subTxt3.setText("노래");
-                subTxt4.setText("TV");
+            entertainment();
             });
         });
 
+
+    }
+
+    private void dailyAction() {
+        linearLayout.setVisibility(View.VISIBLE);
+        imgSubBtn1.setImageResource(R.drawable.food);
+        imgSubBtn2.setImageResource(R.drawable.bathroom);
+        imgSubBtn3.setImageResource(R.drawable.cloth);
+        imgSubBtn4.setImageResource(R.drawable.temperature);
+        subTxt1.setText("음식");
+        subTxt2.setText("화장실");
+        subTxt3.setText("옷");
+        subTxt4.setText("온도");
+
+    }
+    public void Sick(){
+        linearLayout.setVisibility(View.VISIBLE);
+        imgSubBtn1.setImageResource(R.drawable.headache);
+        imgSubBtn2.setImageResource(R.drawable.leg);
+        imgSubBtn3.setImageResource(R.drawable.heart);
+        imgSubBtn4.setImageResource(R.drawable.throat);
+        subTxt1.setText("머리");
+        subTxt2.setText("다리");
+        subTxt3.setText("심장");
+        subTxt4.setText("목");
+
+    }
+    public void command(){
+        linearLayout.setVisibility(View.VISIBLE);
+        imgSubBtn1.setImageResource(R.drawable.light);
+        imgSubBtn2.setImageResource(R.drawable.clean);
+        imgSubBtn3.setImageResource(R.drawable.window);
+        imgSubBtn4.setImageResource(R.drawable.bug);
+        subTxt1.setText("불");
+        subTxt2.setText("정소");
+        subTxt3.setText("장문");
+        subTxt4.setText("벌레");
+
+    }
+    public void  entertainment(){
+        linearLayout.setVisibility(View.VISIBLE);
+        imgSubBtn1.setImageResource(R.drawable.walk);
+        imgSubBtn2.setImageResource(R.drawable.game);
+        imgSubBtn3.setImageResource(R.drawable.music);
+        imgSubBtn4.setImageResource(R.drawable.tv);
+        subTxt1.setText("산책");
+        subTxt2.setText("겔임");
+        subTxt3.setText("노래");
+        subTxt4.setText("TV");
 
     }
 
@@ -351,16 +337,20 @@ public class MainActivity extends AppCompatActivity {
                         nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
                         raw_data_index = 0;
 
-                        if (startAction) {
+                        if (startAction && !firstButtonClicked) {
 
                             Arrays.sort(raw_data);
                             realtimerange = raw_data[raw_data.length - 1] - raw_data[0];
 
                             if ((realtimerange <= goodmax) && ((goodmin) < realtimerange)) {
-                                Log.e("TAG1", "realtimerange1=" + realtimerange);
+                                buttonChecked(currentIndex);
+                                /*&Log.e("TAG", "realtimerange1=" + realtimerange);
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
                                 ImageButton currentButton = imageButtons.get(currentIndex);
-                                currentButton.callOnClick();
+                                Log.e("TAG", "current Index" + imageButtons.get(currentIndex));
+                                currentButton.performClick();
+                                Log.e("TAG", "buttonclicked");*/
+
 
                             } else if ((realtimerange <= badmax) && ((badmin) < realtimerange)) {
                                 Log.e("TAG1", "realtimerange2=" + realtimerange);
@@ -406,16 +396,19 @@ public class MainActivity extends AppCompatActivity {
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTING:
                     showToast("Connecting", Toast.LENGTH_SHORT);
+                    Log.e("TAG","ConNECTING");
                     // Do something when connecting
                     break;
                 case ConnectionStates.STATE_CONNECTED:
                     // Do something when connected
                     tgStreamReader.start();
+                    Log.e("TAG","Connected");
                     showToast("Connected", Toast.LENGTH_SHORT);
                     int algoTypes = NskAlgoType.NSK_ALGO_TYPE_ATT.value;
 
                     int ret = nskAlgoSdk.NskAlgoInit(algoTypes, getFilesDir().getAbsolutePath());
                     if (ret == 0) {
+                        Log.e("TAG","receiving data");
                         showToast("Receiving data ", Toast.LENGTH_LONG);
                         nskAlgoSdk.NskAlgoStart(false);
                     }
@@ -483,6 +476,22 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+    private void buttonChecked (int num) {
+        firstButtonClicked = true;
+        if(num == 1){
+            dailyAction();
+        }
+        else if ( num==2){
+            Sick();
+        }
+        else if(num==3){
+            command();
+
+        }else if(num==4){
+            entertainment();
+        }
+    }
+
     public void showToast(final String msg, final int timeStyle) {
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
@@ -491,9 +500,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 
 }
