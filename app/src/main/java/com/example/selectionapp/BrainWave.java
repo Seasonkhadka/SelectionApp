@@ -6,10 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 
 import com.neurosky.AlgoSdk.NskAlgoDataType;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
@@ -20,105 +17,38 @@ import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class BrainWave extends Service {
-    private NskAlgoSdk nskAlgoSdk;
     private BluetoothAdapter bluetoothAdapter;
+    private NskAlgoSdk nskAlgoSdk;
+    private String connectionStatus;
     private TgStreamReader tgStreamReader;
-    private TextView connectionStatus;
     private short raw_data[] = {0};
     private int raw_data_index = 0;
-    InputStream badAvg, goodAvg;
-    List<Double> goodrange = new ArrayList<>();
-    List<Double> badrange = new ArrayList<>();
-    double realtimerange, goodmin, goodmax, badmin, badmax;
-    String[] goodrage;
-    String[] badrage;
-    int currentIndex = 0;
-
-    OptionActivity opt;
-    private boolean startAction = false;
-    private boolean firstButtonClicked= false;
-    private MainActivity mainActivity;
-    public String status;
-
-    public BrainWave(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-
-    }
 
     @Override
     public void onCreate() {
-         opt=new OptionActivity();
-        // Example usage:
-       status = connectionStatus.getText().toString();
-// Use the status variable or perform other operations with the connectionStatus TextView
+        super.onCreate();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        connectToBluetoothDevice();
+        return START_STICKY;
+    }
 
-        goodAvg = getResources().openRawResource(R.raw.good);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(goodAvg));
-        try {
-            String csvline;
-            while ((csvline = reader.readLine()) != null) {
-                goodrage = csvline.split(",");
-                try {
-                    //double[] doubleArray = Arrays.stream(goodrage).mapToDouble(Double::parseDouble).toArray();
-                    goodrange.add(Double.valueOf(goodrage[0] + ""));
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (goodrange.size() > 0) {
-                Collections.sort(goodrange);
-                goodmin = goodrange.get(0);
-                goodmax = goodrange.get(goodrange.size() - 1);
-                Log.e("TAG2", "good min : " + goodmin);
-                Log.e("TAG2", "good max : " + goodmax);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disconnectFromBluetoothDevice();
+    }
 
-        badAvg = getResources().openRawResource(R.raw.bad);
-        BufferedReader reader1 = new BufferedReader(new InputStreamReader(badAvg));
-        Log.e("TAG2", "start");
-        try {
-            String csvline1;
-            while ((csvline1 = reader1.readLine()) != null) {
-                badrage = csvline1.split(",");
-                try {
-                    //double[] doubleArray = Arrays.stream(goodrage).mapToDouble(Double::parseDouble).toArray();
-                    badrange.add(Double.valueOf(badrage[0] + ""));
-                } catch (Exception e) {
-                    Log.e("TAG2", "error : " + e);
-                    e.printStackTrace();
-                }
-            }
-
-            if (badrange.size() > 0) {
-                Collections.sort(badrange);
-                badmin = badrange.get(0);
-                badmax = badrange.get(badrange.size() - 1);
-                Log.e("TAG2", "bad min : " + badmin);
-                Log.e("TAG2", "bad max : " + badmax);
-            }
-
-
-        } catch (Exception e) {
-            Log.e("TAG2", "error 2 : " + e);
-            e.printStackTrace();
-        }
-
-
+    private void connectToBluetoothDevice() {
         try {
             // (1) Make sure that the device supports Bluetooth and Bluetooth is on
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -127,32 +57,21 @@ public class BrainWave extends Service {
                         this,
                         "Please enable your Bluetooth and re-run this program !",
                         Toast.LENGTH_LONG).show();
-                //finish();
+            } else {
+                init();
+                connect();
             }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("TAG", "error:" + e.getMessage());
-            return;
+
         }
 
-        init();
     }
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        connect();
-        return START_STICKY;
-    }
-    @Override
-    public IBinder onBind (Intent intent){
-        return null;
-    }
-
-
-
-
 
     private void init() {
         nskAlgoSdk = new NskAlgoSdk();
+        tgStreamReader = new TgStreamReader(bluetoothAdapter, callback);
 
         nskAlgoSdk.setOnStateChangeListener((state, reason) -> {
             String stateStr = "";
@@ -167,57 +86,57 @@ public class BrainWave extends Service {
                     reasonStr = r.toString();
                 }
             }
-            Log.e("TAG", "NskAlgoSdkStateChangeListener: state: " + stateStr + ", reason: " + reasonStr);
+            //Log.e("TAG", "NskAlgoSdkStateChangeListener: state: " + stateStr + ", reason: " + reasonStr);
 
             final int[] finalState = {state};
-            runOnUiThread(() -> {
-                // change UI elements here
-                if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_RUNNING.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_COLLECTING_BASELINE_DATA.value) {
-                    connectionStatus.setText("running");
-                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_STOP.value) {
-                    raw_data = null;
-                    raw_data_index = 0;
-                    connectionStatus.setText("Stopped");
-                    if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
 
-                        // Prepare for connecting
-                        tgStreamReader.stop();
-                        tgStreamReader.close();
-                    }
+            // change UI elements here
+            if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_RUNNING.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_COLLECTING_BASELINE_DATA.value) {
+                connectionStatus = "running";
+            } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_STOP.value) {
+                raw_data = null;
+                raw_data_index = 0;
+                connectionStatus = "Stopped";
+                if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
 
-                    System.gc();
-                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_PAUSE.value) {
-                    connectionStatus.setText("paused");
-
-                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_ANALYSING_BULK_DATA.value) {
-                    connectionStatus.setText("analyzing");
-
-                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_INITED.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_UNINTIED.value) {
-                    connectionStatus.setText("inited");
+                    // Prepare for connecting
+                    tgStreamReader.stop();
+                    tgStreamReader.close();
                 }
-            });
+
+                System.gc();
+            } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_PAUSE.value) {
+                connectionStatus = "paused";
+
+            } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_ANALYSING_BULK_DATA.value) {
+                connectionStatus = "analyzing";
+
+            } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_INITED.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_UNINTIED.value) {
+                connectionStatus = "inited";
+            }
         });
     }
 
-        private void connect() {
-            raw_data = new short[2560];
-            raw_data_index = 0;
+    ;
 
-            tgStreamReader = new TgStreamReader(bluetoothAdapter, callback);
+    private void connect() {
+        raw_data = new short[2560];
+        raw_data_index = 0;
 
-            if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
 
-                // Prepare for connecting
-                tgStreamReader.stop();
-                tgStreamReader.close();
-            }
+        if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
 
-            // (4) Demo of  using connect() and start() to replace connectAndStart(),
-            // please call start() when the state is changed to STATE_CONNECTED
-            tgStreamReader.connect();
+            // Prepare for connecting
+            tgStreamReader.stop();
+            tgStreamReader.close();
         }
 
-    private TgStreamHandler callback = new TgStreamHandler() {
+        // (4) Demo of  using connect() and start() to replace connectAndStart(),
+        // please call start() when the state is changed to STATE_CONNECTED
+        tgStreamReader.connect();
+    }
+
+    private final TgStreamHandler callback = new TgStreamHandler() {
 
         @Override
         public void onDataReceived(int datatype, int data, Object obj) {
@@ -239,51 +158,6 @@ public class BrainWave extends Service {
                 case MindDataType.CODE_RAW:
                     raw_data[raw_data_index++] = (short) data;
                     // Log.e("TAG1", "rawdata :" +(short) data);
-
-
-                    if (mainActivity.isButtonClicked() && !startAction) {
-                        startAction = true;
-                        raw_data_index = 0;
-                        return;
-                    }
-                    if (raw_data_index == 2560) {
-                        nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
-                        raw_data_index = 0;
-
-                        if (startAction && !firstButtonClicked) {
-
-                            Arrays.sort(raw_data);
-                            realtimerange = raw_data[raw_data.length - 1] - raw_data[0];
-
-                            if ((realtimerange <= goodmax) && ((goodmin) < realtimerange)) {
-                                buttonChecked(currentIndex);
-                                /*&Log.e("TAG", "realtimerange1=" + realtimerange);
-                                showToast("you like the image ", Toast.LENGTH_SHORT);
-                                ImageButton currentButton = imageButtons.get(currentIndex);
-                                Log.e("TAG", "current Index" + imageButtons.get(currentIndex));
-                                currentButton.performClick();
-                                Log.e("TAG", "buttonclicked");*/
-
-
-                            } else if ((realtimerange <= badmax) && ((badmin) < realtimerange)) {
-                                Log.e("TAG1", "realtimerange2=" + realtimerange);
-                                showToast("you dont like the image ", Toast.LENGTH_SHORT);
-                                currentIndex++;
-                                if (currentIndex >= 4) {
-                                    currentIndex = 0; // Reset to the first button if the end is reached
-                                }
-                            } else {
-                                Log.e("TAG1", "realtimerange3=" + realtimerange);
-
-                                showToast("no value matched", Toast.LENGTH_SHORT);
-                            }
-
-
-                        }
-
-
-                    }
-
                     break;
                 default:
                     break;
@@ -293,7 +167,7 @@ public class BrainWave extends Service {
         @Override
         public void onStatesChanged(int connectionStates) {
 
-            Log.d("TAG", "connectionStates change to: " +connectionStates);
+            Log.d("TAG", "connectionStates change to: " + connectionStates);
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTING:
                     showToast("Connecting", Toast.LENGTH_SHORT);
@@ -322,15 +196,10 @@ public class BrainWave extends Service {
                     //You can change the save path by calling setRecordStreamFilePath(String filePath) before startRecordRawData
                     //tgStreamReader.startRecordRawData();
 
-                    BrainWave.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            showToast("click to compare the data", Toast.LENGTH_LONG);
+                    showToast("click to compare the data", Toast.LENGTH_LONG);
 
-                            //receivedata();
+                    //receivedata();
 
-                        }
-
-                    });
 
                     break;
                 case ConnectionStates.STATE_GET_DATA_TIME_OUT:
@@ -385,37 +254,151 @@ public class BrainWave extends Service {
         }
 
         public void showToast(final String msg, final int timeStyle) {
-            BrainWave.this.runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(getApplicationContext(), msg, timeStyle).show();
-                }
-            });
-
+           // Toast.makeText(getApplicationContext(), msg, timeStyle).show();
         }
     };
-    private void buttonChecked (int num) {
-        firstButtonClicked = true;
-        if(num == 1){
-            opt.dailyAction();
-        }
-        else if ( num==2){
-            opt.Sick();
-        }
-        else if(num==3){
-            opt.command();
 
-        }else if(num==4){
-            opt.entertainment();
-        }
 
+    private void disconnectFromBluetoothDevice() {
+        /*if (bluetoothSocket != null) {
+            try {
+                bluetoothSocket.close();
+                Log.d("TAG", "Disconnected from Bluetooth device");
+            } catch (IOException e) {
+                Log.e(TAG, "Error closing Bluetooth socket: " + e.getMessage());
+            }
+        }*/
     }
+
+    /*
+    private NskAlgoSdk nskAlgoSdk;
+    private BluetoothAdapter bluetoothAdapter;
+    //int currentIndex = 0;
+    public static final String ACTION_ARRAY_UPDATED = "com.example.ACTION_ARRAY_UPDATED";
+    //OptionActivity opt;
+    private boolean startAction = false;
+    private boolean firstButtonClicked= false;
+    public String status;
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+      // status = connectionStatus.getText().toString();
+
+        try {
+            // (1) Make sure that the device supports Bluetooth and Bluetooth is on
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+                Toast.makeText(
+                        this,
+                        "Please enable your Bluetooth and re-run this program !",
+                        Toast.LENGTH_LONG).show();
+                //finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "error:" + e.getMessage());
+
+        }
+
+
+        init();
+        connect();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public IBinder onBind (Intent intent){
+
+        return null;
+    }
+
+
+
+
+
+    private void init() {
+        nskAlgoSdk = new NskAlgoSdk();
+
+        nskAlgoSdk.setOnStateChangeListener((state, reason) -> {
+            String stateStr = "";
+            String reasonStr = "";
+            for (NskAlgoState s : NskAlgoState.values()) {
+                if (s.value == state) {
+                    stateStr = s.toString();
+                }
+            }
+            for (NskAlgoState r : NskAlgoState.values()) {
+                if (r.value == reason) {
+                    reasonStr = r.toString();
+                }
+            }
+            //Log.e("TAG", "NskAlgoSdkStateChangeListener: state: " + stateStr + ", reason: " + reasonStr);
+
+            final int[] finalState = {state};
+            mainActivity.runOnUiThread(() -> {
+                // change UI elements here
+                if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_RUNNING.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_COLLECTING_BASELINE_DATA.value) {
+                    connectionStatus.setText("running");
+                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_STOP.value) {
+                    raw_data = null;
+                    raw_data_index = 0;
+                    connectionStatus.setText("Stopped");
+                    if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
+
+                        // Prepare for connecting
+                        tgStreamReader.stop();
+                        tgStreamReader.close();
+                    }
+
+                    System.gc();
+                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_PAUSE.value) {
+                    connectionStatus.setText("paused");
+
+                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_ANALYSING_BULK_DATA.value) {
+                    connectionStatus.setText("analyzing");
+
+                } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_INITED.value || finalState[0] == NskAlgoState.NSK_ALGO_STATE_UNINTIED.value) {
+                    connectionStatus.setText("inited");
+                }
+            });
+        });
+    }
+
+        private void connect() {
+            raw_data = new short[2560];
+            raw_data_index = 0;
+
+            tgStreamReader = new TgStreamReader(bluetoothAdapter, callback);
+
+            if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
+
+                // Prepare for connecting
+                tgStreamReader.stop();
+                tgStreamReader.close();
+            }
+
+            // (4) Demo of  using connect() and start() to replace connectAndStart(),
+            // please call start() when the state is changed to STATE_CONNECTED
+            tgStreamReader.connect();
+        }
+
+
+
 
 public void onDestroy(){
     super.onDestroy();
 }
+    private void updateArray(short[] rawData) {
+        // Update the array
 
-    private void runOnUiThread(Runnable runnable) {
-
+        // Broadcast the updated array
+        Intent intent = new Intent(ACTION_ARRAY_UPDATED);
+        intent.putExtra("raw_data", rawData);
+        sendBroadcast(intent);
     }
+
+
+*/
 }
 
