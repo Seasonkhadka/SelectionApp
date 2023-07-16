@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,14 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         mainImage.setOnClickListener(view -> {
-            /*Intent intent = new Intent(MainActivity.this, OptionActivity.class);
-
+            Intent intent = new Intent(MainActivity.this, OptionActivity.class);
+            intent.putExtra("GOOD_MIN", goodMin);
+            intent.putExtra("GOOD_MAX", goodMax);
+            intent.putExtra("BAD_MIN", badMin);
+            intent.putExtra("BAD_MIN", badMax);
             startActivity(intent);
-*/
-            Log.e("TAG", "goodMin : " + goodMin);
-            Log.e("TAG", "goodMax : " + goodMax);
-            Log.e("TAG", "badMin : " + badMin);
-            Log.e("TAG", "badMax : " + badMax);
 
         });
 
