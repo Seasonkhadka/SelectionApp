@@ -27,17 +27,22 @@ public class OptionActivity extends AppCompatActivity implements BrainWaveListen
     private BrainWave brainWave;
 
     private int goodMin, goodMax, badMin, badMax;
-
+    private void bindToBackgroundService() {
+        Intent serviceIntent = new Intent(this, BrainWave.class);
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        firstButtonClicked=true;
 
         Intent intent = getIntent();
         goodMin = intent.getIntExtra("goodMin", 0);
         goodMax = intent.getIntExtra("goodMax", 0);
         badMin = intent.getIntExtra("badMin", 0);
         badMax = intent.getIntExtra("badMax", 0);
+
 
         Intent serviceIntent = new Intent(this, BrainWave.class);
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -67,8 +72,8 @@ public class OptionActivity extends AppCompatActivity implements BrainWaveListen
     }
 
     @Override
-    public void getData(short data) {
-        Log.e("TAG", "Data: " + data);
+    public void getData(short[]raw_data) {
+        Log.e("TAG", "Data: " + raw_data);
     }
 
     @Override
@@ -83,12 +88,14 @@ public class OptionActivity extends AppCompatActivity implements BrainWaveListen
             brainWave = binder.getBrainWave();
             brainWave.setBrainWaveListener(OptionActivity.this);
         }
-
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             brainWave = null;
         }
     };
+
+
+
 
 
     @Override

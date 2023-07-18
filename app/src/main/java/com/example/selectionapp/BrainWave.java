@@ -35,7 +35,7 @@ public class BrainWave extends Service {
     }
 
     public interface BrainWaveListener {
-        void getData(short data);
+        void getData(short[] raw_data);
 
         void resetData();
     }
@@ -115,6 +115,7 @@ public class BrainWave extends Service {
     }
 
     private void connect() {
+
         if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
             // Prepare for connecting
             tgStreamReader.stop();
@@ -145,12 +146,14 @@ public class BrainWave extends Service {
                     nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, pqValue, 1);
                     break;
                 case MindDataType.CODE_RAW:
-                        brainWaveListener.getData((short) data);
+                    short raw_data[]={(short) data};
+                    nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, raw_data, 1);
+                    Log.e("TAG","raw_data"+raw_data);
+                    brainWaveListener.getData(raw_data);
 
-                    Log.e("TAG","errror : "+(short) data);
+
                     break;
-                default:
-                    break;
+
             }
         }
 
@@ -213,6 +216,7 @@ public class BrainWave extends Service {
             //Toast.makeText(getApplicationContext(), msg, timeStyle).show();
         }
     };
+
 
     public class LocalBinder extends Binder {
         BrainWave getBrainWave() {
