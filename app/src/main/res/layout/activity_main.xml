@@ -8,22 +8,26 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteX="-109dp"
     tools:layout_editor_absoluteY="9dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    <TextView
-        android:id="@+id/customize"
-        android:layout_width="193dp"
-        android:layout_height="59dp"
-        android:fontFamily="sans-serif-black"
-        android:text="App for you "
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.582"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.136" />
+        <TextView
+            android:id="@+id/customize"
+            android:layout_width="193dp"
+            android:layout_height="59dp"
+            android:fontFamily="sans-serif-black"
+            android:text="App for you "
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.123" />
 
-    <Button
+        <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,19 +38,21 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="JUST THINK WHAT YOU NEED TO DO !!"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.678"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customize"
-        app:layout_constraintVertical_bias="0.047" />
+        <TextView
+            android:id="@+id/textView"
+            style="@style/Widget.Material3.SearchView.Prefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JUST THINK WHAT YOU NEED TO DO !!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:fontFamily="sans-serif-black"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customize"
+            app:layout_constraintVertical_bias="0.072" />
 
-    <TextView
+        <TextView
         android:id="@+id/connectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,4 +65,242 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/DailyActivity"
+            android:layout_width="65dp"
+            android:layout_height="76dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.091"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:text="일상"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.109"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DailyActivity"></TextView>
+
+        <ImageButton
+            android:id="@+id/Sick"
+            android:layout_width="59dp"
+            android:layout_height="79dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.357"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.09"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:text="아픔"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.227"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/Sick"
+            app:layout_constraintVertical_bias="0.024"></TextView>
+
+        <ImageButton
+            android:id="@+id/Command"
+            android:layout_width="56dp"
+            android:layout_height="81dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.639"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.09"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+        <ImageButton
+            android:id="@+id/Entertainment"
+            android:layout_width="64dp"
+            android:layout_height="79dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/button_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.925"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.09"
+            tools:ignore="SpeakableTextPresentCheck"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도음"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.643"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Command"
+            app:layout_constraintVertical_bias="0.027" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.883"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Entertainment"
+            app:layout_constraintVertical_bias="0.029" />
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/Secondary1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+    <ImageButton
+            android:id="@+id/imgsub1"
+            android:layout_width="65dp"
+            android:layout_height="76dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.101"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.319"
+            tools:srcCompat="@tools:sample/avatars"
+           />
+
+        <ImageButton
+            android:id="@+id/imgSub2"
+            android:layout_width="65dp"
+            android:layout_height="79dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.364"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.32"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <ImageButton
+            android:id="@+id/imgSub3"
+            android:layout_width="65dp"
+            android:layout_height="76dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.656"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.326"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <ImageButton
+            android:id="@+id/imgSub4"
+            android:layout_width="56dp"
+            android:layout_height="81dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.907"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.321"
+            tools:srcCompat="@tools:sample/avatars"
+          />
+
+        <TextView
+            android:id="@+id/txtsub2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.376"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub2"
+            app:layout_constraintVertical_bias="0.051"
+          />
+
+        <TextView
+            android:id="@+id/txtsub3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.643"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub3"
+
+            app:layout_constraintVertical_bias="0.047" />
+
+        <TextView
+            android:id="@+id/txtsub4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.929"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub4"
+            app:layout_constraintVertical_bias="0.047"
+          />
+
+        <TextView
+            android:id="@+id/txtsub1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.099"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgsub1"
+            app:layout_constraintVertical_bias="0.058"
+            />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
