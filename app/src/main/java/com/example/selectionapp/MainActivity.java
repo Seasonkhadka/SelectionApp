@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
     String[] goodRage;
     String[] badRage;
     Button mainImage;
-    private ConstraintLayout secondaryLayout,primaryLayout,secondary1,secondary2,secondary3,secondary4;
+    private ConstraintLayout secondaryLayout;
+    private ConstraintLayout primaryLayout;
+    private static ConstraintLayout secondary1;
+    private ConstraintLayout secondary2;
+    private ConstraintLayout secondary3;
+    private ConstraintLayout secondary4;
     private boolean buttonClicked = false;
     private boolean startAction = false;
     private short raw_data[] = {0};
@@ -160,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
         dailyActivity.setOnClickListener(dailyView -> {
-            buttonChecked(0);
+            dailyAction();
         });
 
 
@@ -180,8 +185,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private void dailyAction() {
         secondary1.setVisibility(View.VISIBLE);
-
-
     }
     public void Sick(){
         secondary2.setVisibility(View.VISIBLE);
@@ -311,14 +314,19 @@ public class MainActivity extends AppCompatActivity {
                             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
 
                             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                                Log.e("TAG1", "realtimerange1=" +realTimeRange);
+                                Log.e("TAG123", "realtimerange1=" +realTimeRange);
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
-                                buttonChecked(0);
-                                Log.e("TAG","CurrentIndex "+ currentIndex);
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                       dailyAction();
+                                    }
+                                });
+
+                                Log.e("TAG123","CurrentIndex "+ currentIndex);
                                 Log.e("TAG1", "button has been clicked");
 
                             } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
-                                Log.e("TAG1", "realtimerange2=" + realTimeRange);
+                                Log.e("TAG123", "realtimerange2=" + realTimeRange);
                                 showToast("you dont like the image ", Toast.LENGTH_SHORT);
                                 Log.e("TAG","CurrentIndex "+ currentIndex);
                                 currentIndex++;
@@ -328,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("TAG","CurrentIndex==4 "+ currentIndex);
                                 }
                             } else {
-                                Log.e("TAG1", "realtimerange3=" +realTimeRange);
+                                Log.e("TAG123", "realtimerange3=" +realTimeRange);
 
                                 showToast("no value matched", Toast.LENGTH_SHORT);
                             }
@@ -442,12 +450,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void buttonChecked (int num) {
-
-
-        if(num == 0){
-            dailyAction();
-        }
-        else if ( num==1){
+        if ( num==1){
             Sick();
         }
         else if(num==2){
