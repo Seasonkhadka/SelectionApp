@@ -168,6 +168,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+        dailyActivity.setOnClickListener(dailyView -> {
+            buttonChecked(0);
+        });
+
+
+        sick.setOnClickListener(sickView -> {
+
+        });
+
+        command.setOnClickListener(commandView -> {
+            command();
+        });
+
+        entertainment.setOnClickListener(entertainmentView -> {
+            entertainment();
+        });
 
         init();
     }
@@ -336,14 +352,19 @@ public class MainActivity extends AppCompatActivity {
                             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
                                 Log.e("TAG1", "realtimerange1=" +realTimeRange);
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
-                                buttonChecked(currentIndex);
+                                buttonChecked(0);
+                                Log.e("TAG","CurrentIndex "+ currentIndex);
+                                Log.e("TAG1", "button has been clicked");
 
                             } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
                                 Log.e("TAG1", "realtimerange2=" + realTimeRange);
                                 showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                                Log.e("TAG","CurrentIndex "+ currentIndex);
                                 currentIndex++;
-                                if (currentIndex >= imageButtons.size()) {
+                                Log.e("TAG","CurrentIndex "+ currentIndex);
+                                if (currentIndex ==4 ) {
                                     currentIndex = 0; // Reset to the first button if the end is reached
+                                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
                                 }
                             } else {
                                 Log.e("TAG1", "realtimerange3=" +realTimeRange);
@@ -460,17 +481,18 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void buttonChecked (int num) {
-        firstButtonClicked = true;
-        if(num == 1){
+
+
+        if(num == 0){
             dailyAction();
         }
-        else if ( num==2){
+        else if ( num==1){
             Sick();
         }
-        else if(num==3){
+        else if(num==2){
             command();
 
-        }else if(num==4){
+        }else if(num==3){
             entertainment();
         }
     }
