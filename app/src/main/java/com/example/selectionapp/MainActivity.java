@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     String[] goodRage;
     String[] badRage;
     Button mainImage;
-    private ConstraintLayout secondaryLayout,primaryLayout,secondary1;
+    private ConstraintLayout secondaryLayout,primaryLayout,secondary1,secondary2,secondary3,secondary4;
     private boolean buttonClicked = false;
     private boolean startAction = false;
     private short raw_data[] = {0};
@@ -68,23 +68,14 @@ public class MainActivity extends AppCompatActivity {
         primaryLayout=findViewById(R.id.main);
         secondaryLayout=findViewById(R.id.Secondary);
         secondary1=findViewById(R.id.Secondary1);
+        secondary2=findViewById(R.id.Secondary2);
+        secondary3=findViewById(R.id.Secondary3);
+        secondary4=findViewById(R.id.Secondary4);
         connectionStatus = findViewById(R.id.connectionStatus);
         dailyActivity = findViewById(R.id.DailyActivity);
         sick = findViewById(R.id.Sick);
         command = findViewById(R.id.Command);
         entertainment = findViewById(R.id.Entertainment);
-        dailyActivity.setImageResource(R.drawable.dailyactivity);
-        sick.setImageResource(R.drawable.sick);
-        command.setImageResource(R.drawable.help);
-        entertainment.setImageResource(R.drawable.entertainment);
-        imgSubBtn1 = findViewById(R.id.imgsub1);
-        imgSubBtn2 = findViewById(R.id.imgSub2);
-        imgSubBtn3 = findViewById(R.id.imgSub3);
-        imgSubBtn4 = findViewById(R.id.imgSub4);
-        subTxt1 = findViewById(R.id.txtsub1);
-        subTxt2 = findViewById(R.id.txtsub2);
-        subTxt3 = findViewById(R.id.txtsub3);
-        subTxt4 = findViewById(R.id.txtsub4);
 
 
 
@@ -189,50 +180,20 @@ public class MainActivity extends AppCompatActivity {
     }
     private void dailyAction() {
         secondary1.setVisibility(View.VISIBLE);
-        imgSubBtn1.setImageResource(R.drawable.food);
-        imgSubBtn2.setImageResource(R.drawable.bathroom);
-        imgSubBtn3.setImageResource(R.drawable.cloth);
-        imgSubBtn4.setImageResource(R.drawable.temperature);
-        subTxt1.setText("음식");
-        subTxt2.setText("화장실");
-        subTxt3.setText("옷");
-        subTxt4.setText("온도");
+
 
     }
     public void Sick(){
-        secondary1.setVisibility(View.VISIBLE);
-        imgSubBtn1.setImageResource(R.drawable.headache);
-        imgSubBtn2.setImageResource(R.drawable.leg);
-        imgSubBtn3.setImageResource(R.drawable.heart);
-        imgSubBtn4.setImageResource(R.drawable.throat);
-        subTxt1.setText("머리");
-        subTxt2.setText("다리");
-        subTxt3.setText("심장");
-        subTxt4.setText("목");
+        secondary2.setVisibility(View.VISIBLE);
 
     }
     public void command(){
-        secondary1.setVisibility(View.VISIBLE);
-        imgSubBtn1.setImageResource(R.drawable.light);
-        imgSubBtn2.setImageResource(R.drawable.clean);
-        imgSubBtn3.setImageResource(R.drawable.window);
-        imgSubBtn4.setImageResource(R.drawable.bug);
-        subTxt1.setText("불");
-        subTxt2.setText("정소");
-        subTxt3.setText("장문");
-        subTxt4.setText("벌레");
+        secondary3.setVisibility(View.VISIBLE);
 
     }
     public void  entertainment(){
-        secondary1.setVisibility(View.VISIBLE);
-        imgSubBtn1.setImageResource(R.drawable.walk);
-        imgSubBtn2.setImageResource(R.drawable.game);
-        imgSubBtn3.setImageResource(R.drawable.music);
-        imgSubBtn4.setImageResource(R.drawable.tv);
-        subTxt1.setText("산책");
-        subTxt2.setText("겔임");
-        subTxt3.setText("노래");
-        subTxt4.setText("TV");
+        secondary4.setVisibility(View.VISIBLE);
+
 
     }
 

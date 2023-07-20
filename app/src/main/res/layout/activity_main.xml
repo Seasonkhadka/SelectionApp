@@ -80,6 +80,7 @@
             android:layout_width="65dp"
             android:layout_height="76dp"
             android:scaleType="fitCenter"
+            android:scr="@drawable/dailyactivity"
             android:background="@drawable/button_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,6 +99,7 @@
             android:layout_marginTop="16dp"
             android:clickable="false"
             android:text="일상"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.109"
             app:layout_constraintStart_toStartOf="parent"
@@ -115,6 +117,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.09"
+            android:scr="@drawable/sick"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -142,6 +145,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.09"
+            android:scr="@drawable/help"
             tools:srcCompat="@tools:sample/avatars" />
 
 
@@ -157,6 +161,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.09"
+            android:scr="@drawable/entertainment"
             tools:ignore="SpeakableTextPresentCheck"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -183,14 +188,132 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Entertainment"
             app:layout_constraintVertical_bias="0.029" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Secondary1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageButton
+                android:id="@+id/imgSub1"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.101"
+                app:layout_constraintStart_toStartOf="parent"
+                android:scr="@drawable/food"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.319"
+                tools:srcCompat="@tools:sample/avatars"
+                />
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/Secondary1"
+            <ImageButton
+                android:id="@+id/imgSub2"
+                android:layout_width="65dp"
+                android:layout_height="79dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.364"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.32"
+                android:scr="@drawable/bathroom"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub3"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.656"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scr="@drawable/cloth"
+                app:layout_constraintVertical_bias="0.326"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub4"
+                android:layout_width="56dp"
+                android:layout_height="81dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.907"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scr="@drawable/temperature"
+                app:layout_constraintVertical_bias="0.321"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+            <TextView
+                android:id="@+id/txtSub1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="음식"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.099"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub1"
+                app:layout_constraintVertical_bias="0.058"
+                />
+
+            <TextView
+                android:id="@+id/txtSub2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="화장실"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.376"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub2"
+                app:layout_constraintVertical_bias="0.051"
+                />
+
+            <TextView
+                android:id="@+id/txtSub3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="옷"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.643"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub3"
+
+                app:layout_constraintVertical_bias="0.047" />
+
+            <TextView
+                android:id="@+id/txtSub4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="온도"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.929"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub4"
+                app:layout_constraintVertical_bias="0.047"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/Secondary2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone">
     <ImageButton
-            android:id="@+id/imgsub1"
+            android:id="@+id/imgSub2_1"
             android:layout_width="65dp"
             android:layout_height="76dp"
             android:scaleType="fitCenter"
@@ -199,12 +322,13 @@
             app:layout_constraintHorizontal_bias="0.101"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+        android:scr="@drawable/headache"
             app:layout_constraintVertical_bias="0.319"
             tools:srcCompat="@tools:sample/avatars"
            />
 
         <ImageButton
-            android:id="@+id/imgSub2"
+            android:id="@+id/imgSub2_2"
             android:layout_width="65dp"
             android:layout_height="79dp"
             android:scaleType="fitCenter"
@@ -214,11 +338,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.32"
+            android:scr="@drawable/leg"
             tools:srcCompat="@tools:sample/avatars"
             />
 
         <ImageButton
-            android:id="@+id/imgSub3"
+            android:id="@+id/imgSub2_3"
             android:layout_width="65dp"
             android:layout_height="76dp"
             android:scaleType="fitCenter"
@@ -228,11 +353,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.326"
+            android:scr="@drawable/heart"
             tools:srcCompat="@tools:sample/avatars"
             />
 
         <ImageButton
-            android:id="@+id/imgSub4"
+            android:id="@+id/imgSub2_4"
             android:layout_width="56dp"
             android:layout_height="81dp"
             android:scaleType="fitCenter"
@@ -242,64 +368,302 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.321"
+            android:scr="@drawable/throat"
             tools:srcCompat="@tools:sample/avatars"
           />
 
+            <TextView
+                android:id="@+id/txtSub2_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="머리"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.099"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub2_1"
+                app:layout_constraintVertical_bias="0.058"
+                />
+
         <TextView
-            android:id="@+id/txtsub2"
+            android:id="@+id/txtSub2_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="다리"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.376"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgSub2"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub2_2"
             app:layout_constraintVertical_bias="0.051"
           />
 
         <TextView
-            android:id="@+id/txtsub3"
+            android:id="@+id/txtSub2_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="TextView"
+            android:text="심장"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.643"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgSub3"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub2_3"
 
             app:layout_constraintVertical_bias="0.047" />
 
         <TextView
-            android:id="@+id/txtsub4"
+            android:id="@+id/txtsub2_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="목"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.929"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgSub4"
+            app:layout_constraintTop_toBottomOf="@+id/imgSub2_4"
             app:layout_constraintVertical_bias="0.047"
           />
 
-        <TextView
-            android:id="@+id/txtsub1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.099"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgsub1"
-            app:layout_constraintVertical_bias="0.058"
-            />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Secondary3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageButton
+                android:id="@+id/imgSub3_1"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.101"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.319"
+                android:scr="@drawable/light"
+                tools:srcCompat="@tools:sample/avatars"
+                />
 
+            <ImageButton
+                android:id="@+id/imgSub3_2"
+                android:layout_width="65dp"
+                android:layout_height="79dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.364"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.32"
+                android:scr="@drawable/clean"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub3_3"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.656"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scr="@drawable/window"
+                app:layout_constraintVertical_bias="0.326"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub3_4"
+                android:layout_width="56dp"
+                android:layout_height="81dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.907"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.321"
+                android:scr="@drawable/bug"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+            <TextView
+                android:id="@+id/txtSub3_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="불"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.099"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub3_1"
+                app:layout_constraintVertical_bias="0.058"
+                />
+
+            <TextView
+                android:id="@+id/txtSub3_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정소"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.376"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub3_2"
+                app:layout_constraintVertical_bias="0.051"
+                />
+
+            <TextView
+                android:id="@+id/txtSub3_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장문"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.643"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub3_3"
+
+                app:layout_constraintVertical_bias="0.047" />
+
+            <TextView
+                android:id="@+id/txtsub3_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="벌레"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.929"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub3_4"
+                app:layout_constraintVertical_bias="0.047"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Secondary4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageButton
+                android:id="@+id/imgSub4_1"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.101"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.319"
+                android:scr="@drawable/walk"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub4_2"
+                android:layout_width="65dp"
+                android:layout_height="79dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.364"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.32"
+                android:scr="@drawable/game"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub4_3"
+                android:layout_width="65dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.656"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.326"
+                android:scr="@drawable/music"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+
+            <ImageButton
+                android:id="@+id/imgSub4_4"
+                android:layout_width="56dp"
+                android:layout_height="81dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.907"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.321"
+                android:scr="@drawable/tv"
+                tools:srcCompat="@tools:sample/avatars"
+                />
+            <TextView
+                android:id="@+id/txtSub4_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="산책"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.099"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub4_1"
+                app:layout_constraintVertical_bias="0.058"
+                />
+
+            <TextView
+                android:id="@+id/txtSub4_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="겔임"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.376"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub4_2"
+                app:layout_constraintVertical_bias="0.051"
+                />
+
+            <TextView
+                android:id="@+id/txtSub4_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="노래"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.643"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub4_3"
+
+                app:layout_constraintVertical_bias="0.047" />
+
+            <TextView
+                android:id="@+id/txtsub4_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TV"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.929"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgSub4_4"
+                app:layout_constraintVertical_bias="0.047"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
