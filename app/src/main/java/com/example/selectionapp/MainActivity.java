@@ -7,10 +7,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private NskAlgoSdk nskAlgoSdk;
@@ -54,21 +59,24 @@ public class MainActivity extends AppCompatActivity {
     private int raw_data_index = 0;
     private TextView connectionStatus;
     private boolean firstButtonClicked= false;
-
+    private boolean SecondBtnClicked=false;
     int currentIndex = 0;
-    ImageButton dailyActivity , sick,command, entertainment,imgSubBtn3, imgSubBtn1,imgSubBtn2,imgSubBtn4;
-    TextView subTxt1,subTxt2, subTxt3,subTxt4;
-
-
+    private TextToSpeech textToSpeech;
+    ImageButton dailyActivity , sick,command, entertainment,foodBtn,toiletBtn;
     double realTimeRange, goodMin, goodMax, badMin, badMax;
     List<ImageButton> imageButtons = new ArrayList<>();
-
-
+    String[] foodArray,toiletArray,clothArray,temperatureArray, headacheArray,legPainArray, throatDiscomfortArray,heartArray,lightContentArray,cleanlinessContentArray,windowContentArray,
+            bugContentArray, walkContentArray,gameContentArray, musicContentArray,tvContentArray;
+    ArrayAdapter<String> foodAdapter,toiletAdapter, clothAdapter,temperatureAdapter,headacheAdapter,legPainAdapter,throatDiscomfortAdapter,heartAdapter,lightAdapter,cleanlinessAdapter,windowAdapter,bugAdapter
+            ,walkAdapter,gameAdapter,musicAdapter,tvAdapter;
+    ListView listView;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listView =(ListView)findViewById(R.id.listVIew);
         mainImage = findViewById(R.id.button);
         primaryLayout=findViewById(R.id.main);
         secondaryLayout=findViewById(R.id.Secondary);
@@ -81,6 +89,45 @@ public class MainActivity extends AppCompatActivity {
         sick = findViewById(R.id.Sick);
         command = findViewById(R.id.Command);
         entertainment = findViewById(R.id.Entertainment);
+        foodBtn= findViewById(R.id.imgSub1);
+        toiletBtn=findViewById(R.id.imgSub2);
+
+        foodArray = ArrayString.food;
+        toiletArray = ArrayString.toilet;
+        clothArray = ArrayString.cloth;
+        temperatureArray = ArrayString.temperature;
+        headacheArray = ArrayString.headache;
+        legPainArray = ArrayString.legPain;
+        throatDiscomfortArray = ArrayString.throatDiscomfort;
+        heartArray = ArrayString.heart;
+        lightContentArray = ArrayString.lightContent;
+        cleanlinessContentArray = ArrayString.cleanlinessContent;
+        windowContentArray = ArrayString.windowContent;
+        bugContentArray = ArrayString.bugContent;
+        walkContentArray = ArrayString.walkContent;
+        gameContentArray = ArrayString.gameContent;
+        musicContentArray = ArrayString.musicContent;
+        tvContentArray = ArrayString.tvContent;
+        foodAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, foodArray);
+        toiletAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, toiletArray);
+        clothAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, clothArray);
+        temperatureAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, temperatureArray);
+        headacheAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, headacheArray);
+        legPainAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, legPainArray);
+        throatDiscomfortAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, throatDiscomfortArray);
+        heartAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, heartArray);
+        lightAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, lightContentArray);
+        cleanlinessAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, cleanlinessContentArray);
+        windowAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, windowContentArray);
+        bugAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, bugContentArray);
+        walkAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, walkContentArray);
+        gameAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, gameContentArray);
+        musicAdapter = new ArrayAdapter<>(this, R.layout.text_view_array, musicContentArray);
+        tvAdapter = new ArrayAdapter<>(this,R.layout.text_view_array, tvContentArray);
+
+
+
+
 
 
 
@@ -167,46 +214,205 @@ public class MainActivity extends AppCompatActivity {
         dailyActivity.setOnClickListener(dailyView -> {
             dailyAction();
         });
-
-
         sick.setOnClickListener(sickView -> {
+            Sick();
 
         });
-
         command.setOnClickListener(commandView -> {
             command();
         });
-
         entertainment.setOnClickListener(entertainmentView -> {
             entertainment();
         });
 
+        // Set the item click listener for the ListView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String selectedItem = (String) adapterView.getItemAtPosition(position);
+                showToast(":"+selectedItem,Toast.LENGTH_SHORT); // Show the selected item text in a Toast
+            }
+        });
+
+
         init();
     }
     private void dailyAction() {
+        secondary4.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
+        secondary2.setVisibility(View.GONE);
         secondary1.setVisibility(View.VISIBLE);
+        if(firstButtonClicked &! SecondBtnClicked){
+            currentIndex=0;
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        dailyActivityBtnChecked(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                currentIndex++;
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                if (currentIndex ==4 ) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" +realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
     }
     public void Sick(){
+        secondary4.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
+        secondary1.setVisibility(View.GONE);
         secondary2.setVisibility(View.VISIBLE);
+
+        if (firstButtonClicked &! SecondBtnClicked) {
+            currentIndex=0;
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        healthBtnChecked(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                currentIndex++;
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                if (currentIndex ==4 ) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" +realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
 
     }
     public void command(){
+        secondary2.setVisibility(View.GONE);
+        secondary1.setVisibility(View.GONE);
+        secondary4.setVisibility(View.GONE);
         secondary3.setVisibility(View.VISIBLE);
+        if(firstButtonClicked &! SecondBtnClicked){
+            currentIndex=0;
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        helpBtnChecked(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                currentIndex++;
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                if (currentIndex ==4 ) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" +realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
+
 
     }
     public void  entertainment(){
+        secondary1.setVisibility(View.GONE);
+        secondary2.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
         secondary4.setVisibility(View.VISIBLE);
+        if(firstButtonClicked &! SecondBtnClicked){
+            currentIndex=0;
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        entertainmentBtnChecked(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                currentIndex++;
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                if (currentIndex ==4 ) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" +realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
 
 
     }
-
 
     @Override
     protected void onResume() {
         connect();
         super.onResume();
     }
-
     private void init() {
         nskAlgoSdk = new NskAlgoSdk();
         Log.e("TAG", "test ");
@@ -254,10 +460,6 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
-
-
-
-
     private void connect() {
         raw_data = new short[2560];
         raw_data_index = 0;
@@ -275,8 +477,6 @@ public class MainActivity extends AppCompatActivity {
         // please call start() when the state is changed to STATE_CONNECTED
         tgStreamReader.connect();
     }
-
-
     private TgStreamHandler callback = new TgStreamHandler() {
 
         @Override
@@ -308,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
                         nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
                         raw_data_index = 0;
 
-                        if (startAction) {
+                        if (startAction & !firstButtonClicked) {
 
                             Arrays.sort(raw_data);
                             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
@@ -318,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     public void run() {
-                                       dailyAction();
+                                        buttonChecked(currentIndex);
                                     }
                                 });
 
@@ -448,8 +648,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     };
-
     private void buttonChecked (int num) {
+        firstButtonClicked=true;
+        raw_data_index=0;
+        if(num==0){
+            dailyAction();
+        }
         if ( num==1){
             Sick();
         }
@@ -460,7 +664,120 @@ public class MainActivity extends AppCompatActivity {
             entertainment();
         }
     }
+    private void dailyActivityBtnChecked(int num) {
+        listView.setVisibility(View.VISIBLE);
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(foodAdapter);
+        } else if (num == 1) {
+            listView.setAdapter(toiletAdapter);
+        } else if (num == 2) {
+            listView.setAdapter(clothAdapter);
+        } else if (num == 3) {
+            listView.setAdapter(temperatureAdapter);
+        }
 
+        FinalListView();
+    }
+
+    private void healthBtnChecked(int num) {
+        listView.setVisibility(View.VISIBLE);
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(headacheAdapter);
+        }
+        else if (num == 1) {
+            listView.setAdapter(legPainAdapter);
+        } else if (num == 2) {
+            listView.setAdapter(heartAdapter);
+        } else if (num == 3) {
+            listView.setAdapter(throatDiscomfortAdapter);
+        }
+
+        FinalListView();
+    }
+    private void helpBtnChecked(int num) {
+        listView.setVisibility(View.VISIBLE);
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(lightAdapter);
+        } else if (num == 1) {
+            listView.setAdapter(cleanlinessAdapter);
+        } else if (num == 2) {
+            listView.setAdapter(windowAdapter);
+        } else if (num == 3) {
+            listView.setAdapter(bugAdapter);
+        }
+        FinalListView();
+    }
+    private void entertainmentBtnChecked(int num) {
+        listView.setVisibility(View.VISIBLE);
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(walkAdapter);
+        } else if (num == 1) {
+            listView.setAdapter(gameAdapter);
+        } else if (num == 2) {
+            listView.setAdapter(musicAdapter);
+        } else if (num == 3) {
+            listView.setAdapter(tvAdapter);
+        }
+
+        FinalListView();
+    }
+
+    public void FinalListView(){
+
+        currentIndex=0;
+        if(SecondBtnClicked){
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                       triggerItemClick(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                currentIndex++;
+                Log.e("TAG","CurrentIndex "+ currentIndex);
+                if (currentIndex ==listView.getCount() ) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" +realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+
+    private void triggerItemClick(int currentIndex) {
+        // Automatically trigger onItemClick for the item at desiredPosition
+        listView.performItemClick(
+                listView.getChildAt(currentIndex),
+               currentIndex,
+                listView.getAdapter().getItemId(currentIndex)
+     );}
     public void showToast(final String msg, final int timeStyle) {
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
@@ -469,8 +786,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 
 
