@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         mainImage.setOnClickListener(view -> {
             primaryLayout.setVisibility(View.GONE);
             secondaryLayout.setVisibility(View.VISIBLE);
-            buttonClicked = true;
+            startAction=true;
 
 
         });
@@ -236,176 +236,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         init();
-    }
-    private void dailyAction() {
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary2.setVisibility(View.GONE);
-        secondary1.setVisibility(View.VISIBLE);
-        if(firstButtonClicked &! SecondBtnClicked){
-            currentIndex=0;
-            Arrays.sort(raw_data);
-            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
-
-            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange1=" +realTimeRange);
-                showToast("you like the image ", Toast.LENGTH_SHORT);
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        dailyActivityBtnChecked(currentIndex);
-                    }
-                });
-
-                Log.e("TAG123","CurrentIndex "+ currentIndex);
-                Log.e("TAG1", "button has been clicked");
-
-            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange2=" + realTimeRange);
-                showToast("you dont like the image ", Toast.LENGTH_SHORT);
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                currentIndex++;
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                if (currentIndex ==4 ) {
-                    currentIndex = 0; // Reset to the first button if the end is reached
-                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
-                }
-            } else {
-                Log.e("TAG123", "realtimerange3=" +realTimeRange);
-
-                showToast("no value matched", Toast.LENGTH_SHORT);
-            }
-
-
-        }
-    }
-    public void Sick(){
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary1.setVisibility(View.GONE);
-        secondary2.setVisibility(View.VISIBLE);
-
-        if (firstButtonClicked &! SecondBtnClicked) {
-            currentIndex=0;
-            Arrays.sort(raw_data);
-            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
-
-            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange1=" +realTimeRange);
-                showToast("you like the image ", Toast.LENGTH_SHORT);
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        healthBtnChecked(currentIndex);
-                    }
-                });
-
-                Log.e("TAG123","CurrentIndex "+ currentIndex);
-                Log.e("TAG1", "button has been clicked");
-
-            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange2=" + realTimeRange);
-                showToast("you dont like the image ", Toast.LENGTH_SHORT);
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                currentIndex++;
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                if (currentIndex ==4 ) {
-                    currentIndex = 0; // Reset to the first button if the end is reached
-                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
-                }
-            } else {
-                Log.e("TAG123", "realtimerange3=" +realTimeRange);
-
-                showToast("no value matched", Toast.LENGTH_SHORT);
-            }
-
-
-        }
-
-    }
-    public void command(){
-        secondary2.setVisibility(View.GONE);
-        secondary1.setVisibility(View.GONE);
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.VISIBLE);
-        if(firstButtonClicked &! SecondBtnClicked){
-            currentIndex=0;
-            Arrays.sort(raw_data);
-            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
-
-            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange1=" +realTimeRange);
-                showToast("you like the image ", Toast.LENGTH_SHORT);
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        helpBtnChecked(currentIndex);
-                    }
-                });
-
-                Log.e("TAG123","CurrentIndex "+ currentIndex);
-                Log.e("TAG1", "button has been clicked");
-
-            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange2=" + realTimeRange);
-                showToast("you dont like the image ", Toast.LENGTH_SHORT);
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                currentIndex++;
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                if (currentIndex ==4 ) {
-                    currentIndex = 0; // Reset to the first button if the end is reached
-                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
-                }
-            } else {
-                Log.e("TAG123", "realtimerange3=" +realTimeRange);
-
-                showToast("no value matched", Toast.LENGTH_SHORT);
-            }
-
-
-        }
-
-
-    }
-    public void  entertainment(){
-        secondary1.setVisibility(View.GONE);
-        secondary2.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary4.setVisibility(View.VISIBLE);
-        if(firstButtonClicked &! SecondBtnClicked){
-            currentIndex=0;
-            Arrays.sort(raw_data);
-            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
-
-            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange1=" +realTimeRange);
-                showToast("you like the image ", Toast.LENGTH_SHORT);
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        entertainmentBtnChecked(currentIndex);
-                    }
-                });
-
-                Log.e("TAG123","CurrentIndex "+ currentIndex);
-                Log.e("TAG1", "button has been clicked");
-
-            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange2=" + realTimeRange);
-                showToast("you dont like the image ", Toast.LENGTH_SHORT);
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                currentIndex++;
-                Log.e("TAG","CurrentIndex "+ currentIndex);
-                if (currentIndex ==4 ) {
-                    currentIndex = 0; // Reset to the first button if the end is reached
-                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
-                }
-            } else {
-                Log.e("TAG123", "realtimerange3=" +realTimeRange);
-
-                showToast("no value matched", Toast.LENGTH_SHORT);
-            }
-
-
-        }
-
-
     }
 
     @Override
@@ -499,31 +329,29 @@ public class MainActivity extends AppCompatActivity {
                 case MindDataType.CODE_RAW:
                     raw_data[raw_data_index++] = (short) data;
                     // Log.e("TAG1", "rawdata :" +(short) data);
-                    if (buttonClicked && !startAction) {
-                        startAction = true;
-                        raw_data_index = 0;
-                        return;
-                    }
                     if (raw_data_index == 2560) {
                         nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
                         raw_data_index = 0;
+                        Log.e("TAG","raw_data index ");
 
-                        if (startAction & !firstButtonClicked) {
+                        if (startAction) {
 
                             Arrays.sort(raw_data);
                             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
 
                             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                                Log.e("TAG123", "realtimerange1_1=" +realTimeRange);
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     public void run() {
+                                        startAction=false;
+                                        raw_data_index=0;
                                         buttonChecked(currentIndex);
+
                                     }
                                 });
 
-                                Log.e("TAG123","CurrentIndex "+ currentIndex);
-                                Log.e("TAG1", "button has been clicked");
+
 
                             } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
                                 Log.e("TAG123", "realtimerange2=" + realTimeRange);
@@ -648,7 +476,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     };
+
     private void buttonChecked (int num) {
+        Log.e("TAG","buttonchecked");
         firstButtonClicked=true;
         raw_data_index=0;
         if(num==0){
@@ -664,85 +494,126 @@ public class MainActivity extends AppCompatActivity {
             entertainment();
         }
     }
-    private void dailyActivityBtnChecked(int num) {
-        listView.setVisibility(View.VISIBLE);
-        SecondBtnClicked=true;
-        if (num == 0) {
-            listView.setAdapter(foodAdapter);
-        } else if (num == 1) {
-            listView.setAdapter(toiletAdapter);
-        } else if (num == 2) {
-            listView.setAdapter(clothAdapter);
-        } else if (num == 3) {
-            listView.setAdapter(temperatureAdapter);
+    private void dailyAction() {
+        secondary4.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
+        secondary2.setVisibility(View.GONE);
+        secondary1.setVisibility(View.VISIBLE);
+        currentIndex=0;
+
+        Log.e("TAG","DailyActivity");
+
+
+            if (firstButtonClicked) {
+
+                Arrays.sort(raw_data);
+                realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+                if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                    Log.e("TAG123", "realtimerange2_1=" + realTimeRange);
+                    showToast("you like the image ", Toast.LENGTH_SHORT);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            firstButtonClicked = false;
+                            Log.e("TAG", "Secondbthclicked");
+                            dailyActivityBtnChecked(currentIndex);
+
+                        }
+                    });
+
+
+                } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                    Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                    showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                    Log.e("TAG", "CurrentIndex " + currentIndex);
+                    currentIndex++;
+                    Log.e("TAG", "CurrentIndex " + currentIndex);
+                    if (currentIndex == 4) {
+                        currentIndex = 0; // Reset to the first button if the end is reached
+                        Log.e("TAG", "CurrentIndex==4 " + currentIndex);
+                    }
+                } else {
+                    Log.e("TAG123", "realtimerange3=" + realTimeRange);
+
+                    showToast("no value matched", Toast.LENGTH_SHORT);
+                }
+
+            }
         }
 
-        FinalListView();
-    }
 
-    private void healthBtnChecked(int num) {
-        listView.setVisibility(View.VISIBLE);
-        SecondBtnClicked=true;
-        if (num == 0) {
-            listView.setAdapter(headacheAdapter);
-        }
-        else if (num == 1) {
-            listView.setAdapter(legPainAdapter);
-        } else if (num == 2) {
-            listView.setAdapter(heartAdapter);
-        } else if (num == 3) {
-            listView.setAdapter(throatDiscomfortAdapter);
-        }
 
-        FinalListView();
-    }
-    private void helpBtnChecked(int num) {
-        listView.setVisibility(View.VISIBLE);
-        SecondBtnClicked=true;
-        if (num == 0) {
-            listView.setAdapter(lightAdapter);
-        } else if (num == 1) {
-            listView.setAdapter(cleanlinessAdapter);
-        } else if (num == 2) {
-            listView.setAdapter(windowAdapter);
-        } else if (num == 3) {
-            listView.setAdapter(bugAdapter);
-        }
-        FinalListView();
-    }
-    private void entertainmentBtnChecked(int num) {
-        listView.setVisibility(View.VISIBLE);
-        SecondBtnClicked=true;
-        if (num == 0) {
-            listView.setAdapter(walkAdapter);
-        } else if (num == 1) {
-            listView.setAdapter(gameAdapter);
-        } else if (num == 2) {
-            listView.setAdapter(musicAdapter);
-        } else if (num == 3) {
-            listView.setAdapter(tvAdapter);
-        }
-
-        FinalListView();
-    }
-
-    public void FinalListView(){
+    public void Sick(){
+        secondary4.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
+        secondary1.setVisibility(View.GONE);
+        secondary2.setVisibility(View.VISIBLE);
 
         currentIndex=0;
-        if(SecondBtnClicked){
+
+
+        if (firstButtonClicked ) {
+
             Arrays.sort(raw_data);
             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
 
             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
-                Log.e("TAG123", "realtimerange1=" +realTimeRange);
+                Log.e("TAG123", "realtimerange1=" + realTimeRange);
                 showToast("you like the image ", Toast.LENGTH_SHORT);
                 MainActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                       triggerItemClick(currentIndex);
+                        firstButtonClicked=false;
+                        healthBtnChecked(currentIndex);
                     }
                 });
 
-                Log.e("TAG123","CurrentIndex "+ currentIndex);
+                Log.e("TAG123", "CurrentIndex " + currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG", "CurrentIndex " + currentIndex);
+                currentIndex++;
+                Log.e("TAG", "CurrentIndex " + currentIndex);
+                if (currentIndex == 4) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG", "CurrentIndex==4 " + currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" + realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+        }
+
+
+
+    }
+    public void command(){
+        secondary2.setVisibility(View.GONE);
+        secondary1.setVisibility(View.GONE);
+        secondary4.setVisibility(View.GONE);
+        secondary3.setVisibility(View.VISIBLE);
+
+        currentIndex=0;
+
+
+        if(firstButtonClicked ){
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2_1=" +realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        firstButtonClicked=false;
+                        helpBtnChecked(currentIndex);
+                    }
+                });
+
                 Log.e("TAG1", "button has been clicked");
 
             } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
@@ -751,21 +622,189 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG","CurrentIndex "+ currentIndex);
                 currentIndex++;
                 Log.e("TAG","CurrentIndex "+ currentIndex);
-                if (currentIndex ==listView.getCount() ) {
+                if (currentIndex ==4 ) {
                     currentIndex = 0; // Reset to the first button if the end is reached
-                    Log.e("TAG","CurrentIndex==4 "+ currentIndex);
+
                 }
             } else {
                 Log.e("TAG123", "realtimerange3=" +realTimeRange);
 
                 showToast("no value matched", Toast.LENGTH_SHORT);
             }
+        }
+        }
+
+    public void  entertainment(){
+        secondary1.setVisibility(View.GONE);
+        secondary2.setVisibility(View.GONE);
+        secondary3.setVisibility(View.GONE);
+        secondary4.setVisibility(View.VISIBLE);
 
 
+        currentIndex=0;
+
+            if (firstButtonClicked ) {
+
+                Arrays.sort(raw_data);
+                realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+                if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                    Log.e("TAG123", "realtimerange1=" + realTimeRange);
+                    showToast("you like the image ", Toast.LENGTH_SHORT);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            firstButtonClicked=false;
+                            entertainmentBtnChecked(currentIndex);
+                        }
+                    });
+
+                    Log.e("TAG123", "CurrentIndex " + currentIndex);
+                    Log.e("TAG1", "button has been clicked");
+
+                } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                    Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                    showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                    Log.e("TAG", "CurrentIndex " + currentIndex);
+                    currentIndex++;
+                    Log.e("TAG", "CurrentIndex " + currentIndex);
+                    if (currentIndex == 4) {
+                        currentIndex = 0; // Reset to the first button if the end is reached
+                        Log.e("TAG", "CurrentIndex==4 " + currentIndex);
+                    }
+                } else {
+                    Log.e("TAG123", "realtimerange3=" + realTimeRange);
+
+                    showToast("no value matched", Toast.LENGTH_SHORT);
+                }
+
+
+            }
         }
 
 
+    private void dailyActivityBtnChecked(int num) {
+
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(foodAdapter);
+
+        } else if (num == 1) {
+            listView.setAdapter(toiletAdapter);
+
+        } else if (num == 2) {
+            listView.setAdapter(clothAdapter);
+
+
+        } else if (num == 3) {
+            listView.setAdapter(temperatureAdapter);
+
+        }
+        listView.setVisibility(View.VISIBLE);
+        raw_data_index=0;
+        FinalListView();
     }
+
+    private void healthBtnChecked(int num) {
+
+        SecondBtnClicked=true;
+
+        if (num == 0) {
+            listView.setAdapter(headacheAdapter);
+        }
+        else if (num == 1) {
+            listView.setAdapter(legPainAdapter);
+        } else if (num == 2) {
+            listView.setAdapter(heartAdapter);
+        } else if (num == 3) {
+
+            listView.setAdapter(throatDiscomfortAdapter);
+        }
+        listView.setVisibility(View.VISIBLE);
+        raw_data_index=0;
+        FinalListView();
+    }
+    private void helpBtnChecked(int num) {
+
+
+        if (num == 0) {
+            listView.setAdapter(lightAdapter);
+
+        } else if (num == 1) {
+            listView.setAdapter(cleanlinessAdapter);
+
+        } else if (num == 2) {
+            listView.setAdapter(windowAdapter);
+
+        } else if (num == 3) {
+            listView.setAdapter(bugAdapter);
+
+        }
+        FinalListView();
+    }
+    private void entertainmentBtnChecked(int num) {
+
+        SecondBtnClicked=true;
+        if (num == 0) {
+            listView.setAdapter(walkAdapter);
+
+        } else if (num == 1) {
+            listView.setAdapter(gameAdapter);
+
+        } else if (num == 2) {
+            listView.setAdapter(musicAdapter);
+
+        } else if (num == 3) {
+            listView.setAdapter(tvAdapter);
+
+        }
+        listView.setVisibility(View.VISIBLE);
+        raw_data_index=0;
+        FinalListView();
+    }
+
+    public void FinalListView(){
+
+        currentIndex=0;
+
+        if(SecondBtnClicked) {
+            Arrays.sort(raw_data);
+            realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
+
+            if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange3_1=" + realTimeRange);
+                showToast("you like the image ", Toast.LENGTH_SHORT);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        SecondBtnClicked=false;
+                        triggerItemClick(currentIndex);
+                    }
+                });
+
+                Log.e("TAG123", "CurrentIndex " + currentIndex);
+                Log.e("TAG1", "button has been clicked");
+
+            } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) {
+                Log.e("TAG123", "realtimerange2=" + realTimeRange);
+                showToast("you dont like the image ", Toast.LENGTH_SHORT);
+                Log.e("TAG", "CurrentIndex " + currentIndex);
+                currentIndex++;
+                Log.e("TAG", "CurrentIndex " + currentIndex);
+                if (currentIndex == listView.getCount()) {
+                    currentIndex = 0; // Reset to the first button if the end is reached
+                    Log.e("TAG", "CurrentIndex==4 " + currentIndex);
+                }
+            } else {
+                Log.e("TAG123", "realtimerange3=" + realTimeRange);
+
+                showToast("no value matched", Toast.LENGTH_SHORT);
+            }
+
+
+        }
+        }
+
+
+
 
 
 
