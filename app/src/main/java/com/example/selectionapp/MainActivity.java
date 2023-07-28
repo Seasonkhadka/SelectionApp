@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 Collections.sort(goodRange);
                 goodMin = goodRange.get(0);
                 goodMax = goodRange.get(goodRange.size() - 1);
-                Log.e("TAG2", "good min : " + goodMin);
                 Log.e("TAG2", "good max : " + goodMax);
             }
         } catch (IOException e) {
@@ -185,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TAG2", "error 2 : " + e);
             e.printStackTrace();
         }
+
+
+
         //Bluetooth
         try {
             // (1) Make sure that the device supports Bluetooth and Bluetooth is on
