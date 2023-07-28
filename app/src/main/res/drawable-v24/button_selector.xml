@@ -8,4 +8,5 @@
             <!-- Define the default background or tint color -->
             <color android:color="@android:color/transparent" />
         </item>
+
     </selector>

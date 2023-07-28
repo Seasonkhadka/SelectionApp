@@ -3,6 +3,7 @@ package com.example.selectionapp;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -43,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     Button mainImage;
     private ConstraintLayout secondaryLayout;
     private ConstraintLayout primaryLayout;
-    private static ConstraintLayout secondary1;
-    private ConstraintLayout secondary2;
-    private ConstraintLayout secondary3;
-    private ConstraintLayout secondary4;
+    private static ConstraintLayout healthLayout;
+    private ConstraintLayout dailyActivityLayout;
+    private ConstraintLayout helpLayout;
+    private ConstraintLayout entertainmentLayout;
     private boolean startAction = false;
     private short[] raw_data = {0};
     private int raw_data_index = 0;
@@ -57,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean listViewButtonClicked=false;
     private boolean entBtnClicked=false;
     int currentIndex = 0;
-    ImageButton dailyActivity , sick,command, entertainment,foodBtn,toiletBtn;
+    int backgroundColor;
+    ImageButton dailyActivity , sick,command, entertainment,bathroomBtn,foodBtn,clothBtn,tempBtn,headacheBtn,legPainBtn,throatBtn,
+                heartBtn,lightBtn,cleaninessBtn,windowBtn,bugBtn,walkBtn,gameBtn,musicBtn,tvBtn;
     double realTimeRange, goodMin, goodMax, badMin, badMax;
     String[] foodArray,toiletArray,clothArray,temperatureArray, headacheArray,legPainArray, throatDiscomfortArray,heartArray,lightContentArray,cleanlinessContentArray,windowContentArray,
             bugContentArray, walkContentArray,gameContentArray, musicContentArray,tvContentArray;
@@ -72,18 +75,34 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listVIew);
         mainImage = findViewById(R.id.button);
         primaryLayout=findViewById(R.id.main);
+        backgroundColor = ContextCompat.getColor(this, androidx.cardview.R.color.cardview_light_background);
         secondaryLayout=findViewById(R.id.Secondary);
-        secondary1=findViewById(R.id.Secondary1);
-        secondary2=findViewById(R.id.Secondary2);
-        secondary3=findViewById(R.id.Secondary3);
-        secondary4=findViewById(R.id.Secondary4);
+        dailyActivityLayout=findViewById(R.id.DailyActivity1);
+        helpLayout=findViewById(R.id.help1);
+        healthLayout=findViewById(R.id.health1);
+        entertainmentLayout=findViewById(R.id.Entertainment1);
         connectionStatus = findViewById(R.id.connectionStatus);
         dailyActivity = findViewById(R.id.DailyActivity);
         sick = findViewById(R.id.Sick);
         command = findViewById(R.id.Command);
         entertainment = findViewById(R.id.Entertainment);
-        foodBtn= findViewById(R.id.imgSub1);
-        toiletBtn=findViewById(R.id.imgSub2);
+        //buttons
+        foodBtn=findViewById(R.id.food);
+        bathroomBtn=findViewById(R.id.Bathroom);
+        clothBtn=findViewById(R.id.cloth);
+        tempBtn=findViewById(R.id.temperature);
+        headacheBtn=findViewById(R.id.headache);
+        legPainBtn=findViewById(R.id.legPain);
+        throatBtn=findViewById(R.id.throatPain);
+        heartBtn=findViewById(R.id.heartPain);
+        lightBtn=findViewById(R.id.light);
+        cleaninessBtn=findViewById(R.id.cleaniness);
+        windowBtn=findViewById(R.id.window);
+        bugBtn=findViewById(R.id.bug);
+        walkBtn=findViewById(R.id.walk);
+        gameBtn=findViewById(R.id.game);
+        musicBtn=findViewById(R.id.music);
+        tvBtn=findViewById(R.id.tv);
         foodArray = ArrayString.food;
         toiletArray = ArrayString.toilet;
         clothArray = ArrayString.cloth;
@@ -155,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
             if (badRange.size() > 0) {
                 Collections.sort(badRange);
                 badMin = badRange.get(0);
@@ -163,12 +181,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("TAG2", "bad min : " + badMin);
                 Log.e("TAG2", "bad max : " + badMax);
             }
-
-
         } catch (Exception e) {
             Log.e("TAG2", "error 2 : " + e);
             e.printStackTrace();
         }
+        //Bluetooth
         try {
             // (1) Make sure that the device supports Bluetooth and Bluetooth is on
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -184,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TAG", "error:" + e.getMessage());
             return;
         }
-
         mainImage.setOnClickListener(view -> {
             primaryLayout.setVisibility(View.GONE);
             secondaryLayout.setVisibility(View.VISIBLE);
@@ -192,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         });
         init();
     }
-
     @Override
     protected void onResume() {
         connect();
@@ -224,12 +239,9 @@ public class MainActivity extends AppCompatActivity {
                     raw_data_index = 0;
                     connectionStatus.setText("Stopped");
                     if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
-
-                        // Prepare for connecting
                         tgStreamReader.stop();
                         tgStreamReader.close();
                     }
-
                     System.gc();
                 } else if (finalState[0] == NskAlgoState.NSK_ALGO_STATE_PAUSE.value) {
                     connectionStatus.setText("paused");
@@ -251,15 +263,11 @@ public class MainActivity extends AppCompatActivity {
             tgStreamReader.stop();
             tgStreamReader.close();
         }
-        // (4) Demo of  using connect() and start() to replace connectAndStart(),
-        // please call start() when the state is changed to STATE_CONNECTED
         tgStreamReader.connect();
     }
     private final TgStreamHandler callback = new TgStreamHandler() {
         @Override
         public void onDataReceived(int datatype, int data, Object obj) {
-            // You can handle the received data here
-            // You can feed the raw data to algo sdk here if necessary.
             switch (datatype) {
                 case MindDataType.CODE_ATTENTION:
                     short[] attValue = {(short) data};
@@ -278,35 +286,28 @@ public class MainActivity extends AppCompatActivity {
                     if (raw_data_index == 2560) {
                         NskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
                         raw_data_index = 0;
-                        Log.e("TAG","raw_data index "+startAction);
+                        Log.e("TAG","raw_data index "+raw_data);
                         if (startAction) {
-
                             Arrays.sort(raw_data);
                             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
-
                             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
                                 Log.e("TAG123", "realTimeRange1_1=" +realTimeRange);
                                 showToast("you like the image ", Toast.LENGTH_SHORT);
                                 MainActivity.this.runOnUiThread(() -> {
                                     startAction=false;
                                     buttonChecked(currentIndex);
-
                                 });
-
-
-
                             } else if ((realTimeRange <= badMax) && ((badMin) < realTimeRange)) { //check .....
                                 showToast("you don't like the image ", Toast.LENGTH_SHORT);
                                 currentIndex++;
                                 Log.e("TAG","currentIndex"+currentIndex);
                                 if (currentIndex ==4 ) {
                                     currentIndex = 0; // Reset to the first button if the end is reached
-
                                 }
                             } else {
                                 Log.e("TAG123", "realTimeRange3=" +realTimeRange);
                                 showToast("no value matched", Toast.LENGTH_SHORT);
-                            }
+                            }break;
                         }
                         if(dailyButtonClicked) {
                             Arrays.sort(raw_data);
@@ -403,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
                             realTimeRange = raw_data[raw_data.length - 1] - raw_data[0];
                             if ((realTimeRange <= goodMax) && ((goodMin) < realTimeRange)) {
                                 Log.e("TAG123", "realTimeRange3_1=" + realTimeRange);
-                                showToast("you like the image ", Toast.LENGTH_SHORT);
                                 MainActivity.this.runOnUiThread(() -> {
                                     listViewButtonClicked=false;
                                     triggerItemClick(currentIndex);
@@ -437,10 +437,8 @@ public class MainActivity extends AppCompatActivity {
             switch (connectionStates) {
                 case ConnectionStates.STATE_CONNECTING:
                     showToast("Connecting", Toast.LENGTH_SHORT);
-                    // Do something when connecting
                     break;
                 case ConnectionStates.STATE_CONNECTED:
-                    // Do something when connected
                     tgStreamReader.start();
                     showToast("Connected", Toast.LENGTH_SHORT);
                     int algoTypes = NskAlgoType.NSK_ALGO_TYPE_ATT.value;
@@ -452,52 +450,28 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case ConnectionStates.STATE_WORKING:
-                    // Do something when working
-
-                    //(9) demo of recording raw data , stop() will call stopRecordRawData,
-                    //or you can add a button to control it.
-                    //You can change the save path by calling setRecordStreamFilePath(String filePath) before startRecordRawData
-                    //tgStreamReader.startRecordRawData();
-
                     MainActivity.this.runOnUiThread(() -> showToast("click to compare the data", Toast.LENGTH_LONG));
-
                     break;
                 case ConnectionStates.STATE_GET_DATA_TIME_OUT:
-                    // Do something when getting data timeout
-
-                    //(9) demo of recording raw data, exception handling
-                    //tgStreamReader.stopRecordRawData();
-
                     showToast("Get data time out!", Toast.LENGTH_SHORT);
 
                     if (tgStreamReader != null && tgStreamReader.isBTConnected()) {
                         tgStreamReader.stop();
                         tgStreamReader.close();
                     }
-
                     break;
                 case ConnectionStates.STATE_STOPPED:
-                    // Do something when stopped
-                    // We have to call tgStreamReader.stop() and tgStreamReader.close() much more than
-                    // tgStreamReader.connectAndStart(), because we have to prepare for that
                     showToast("stopped", Toast.LENGTH_LONG);
                     break;
                 case ConnectionStates.STATE_DISCONNECTED:
                     // Do something when disconnected
                     Log.e("TAG", "disconnected");
-
                     showToast("Disconnected", Toast.LENGTH_LONG);
-
                     break;
                 case ConnectionStates.STATE_ERROR:
-                    // Do something when you get error message
                     showToast("error", Toast.LENGTH_LONG);
                     break;
                 case ConnectionStates.STATE_FAILED:
-                    // Do something when you get failed message
-                    // It always happens when open the BluetoothSocket error or timeout
-                    // Maybe the device is not working normal.
-                    // Maybe you have to try again
                     Log.e("TAG", "failed");
                     break;
             }
@@ -505,7 +479,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void buttonChecked (int num) {
-
         if(num==0){
             dailyAction();
         }
@@ -522,32 +495,34 @@ public class MainActivity extends AppCompatActivity {
     }
     private void dailyAction() {
         dailyButtonClicked=true;
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary2.setVisibility(View.GONE);
-        secondary1.setVisibility(View.VISIBLE);
+        dailyActivity.setBackgroundColor(R.drawable.btn_clicked);
+        entertainmentLayout.setVisibility(View.GONE);
+        healthLayout.setVisibility(View.GONE);
+        helpLayout.setVisibility(View.GONE);
+        dailyActivityLayout.setVisibility(View.VISIBLE);
+
         if (dailyButtonClicked){
             return;
         }else {dailyButtonClicked=true;}
     }
-
-
     public void Sick(){
         SickBtnClicked=true;
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary1.setVisibility(View.GONE);
-        secondary2.setVisibility(View.VISIBLE);
+        sick.setBackgroundColor(R.drawable.btn_clicked);
+        entertainmentLayout.setVisibility(View.GONE);
+        healthLayout.setVisibility(View.VISIBLE);
+        dailyActivityLayout.setVisibility(View.GONE);
+        helpLayout.setVisibility(View.GONE);
         if(SickBtnClicked){
             return;
         }
     }
     public void command(){
         helpBtnClicked=true;
-        secondary2.setVisibility(View.GONE);
-        secondary1.setVisibility(View.GONE);
-        secondary4.setVisibility(View.GONE);
-        secondary3.setVisibility(View.VISIBLE);
+        command.setBackgroundColor(R.drawable.btn_clicked);
+        helpLayout.setVisibility(View.VISIBLE);
+        dailyActivityLayout.setVisibility(View.GONE);
+        entertainmentLayout.setVisibility(View.GONE);
+        healthLayout.setVisibility(View.GONE);
         if(helpBtnClicked){
             return;
         }
@@ -555,29 +530,35 @@ public class MainActivity extends AppCompatActivity {
     }
     public void  entertainment(){
         entBtnClicked=true;
-        secondary1.setVisibility(View.GONE);
-        secondary2.setVisibility(View.GONE);
-        secondary3.setVisibility(View.GONE);
-        secondary4.setVisibility(View.VISIBLE);
+        entertainment.setBackgroundColor(R.drawable.btn_clicked);
+        dailyActivityLayout.setVisibility(View.GONE);
+        helpLayout.setVisibility(View.GONE);
+        healthLayout.setVisibility(View.GONE);
+        entertainmentLayout.setVisibility(View.VISIBLE);
         if (entBtnClicked) {
             return;
         }
     }
-    private void setAdapterByCategory(int category, int num) {
+     private void setAdapterByCategory(int category, int num) {
+        listViewButtonClicked=true;
         ArrayAdapter<?> adapter;
         switch (category) {
             case 0: // Daily Activity
                 switch (num) {
                     case 0:
+                        foodBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = foodAdapter;
                         break;
                     case 1:
+                        bathroomBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = toiletAdapter;
                         break;
                     case 2:
+                        clothBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = clothAdapter;
                         break;
                     case 3:
+                        tempBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = temperatureAdapter;
                         break;
                     default:
@@ -587,15 +568,19 @@ public class MainActivity extends AppCompatActivity {
             case 1: // Health
                 switch (num) {
                     case 0:
+                        heartBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = headacheAdapter;
                         break;
                     case 1:
+                        legPainBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = legPainAdapter;
                         break;
                     case 2:
+                        heartBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = heartAdapter;
                         break;
                     case 3:
+                        throatBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = throatDiscomfortAdapter;
                         break;
                     default:
@@ -605,15 +590,19 @@ public class MainActivity extends AppCompatActivity {
             case 2: // Help
                 switch (num) {
                     case 0:
+                        lightBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = lightAdapter;
                         break;
                     case 1:
+                        cleaninessBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = cleanlinessAdapter;
                         break;
                     case 2:
+                        windowBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = windowAdapter;
                         break;
                     case 3:
+                        bugBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = bugAdapter;
                         break;
                     default:
@@ -623,15 +612,19 @@ public class MainActivity extends AppCompatActivity {
             case 3: // Entertainment
                 switch (num) {
                     case 0:
+                        walkBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = walkAdapter;
                         break;
                     case 1:
+                        gameBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = gameAdapter;
                         break;
                     case 2:
+                        musicBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = musicAdapter;
                         break;
                     case 3:
+                        tvBtn.setBackgroundColor(R.drawable.btn_clicked);
                         adapter = tvAdapter;
                         break;
                     default:
@@ -641,23 +634,24 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return;
         }
-        if(listViewButtonClicked){
+        currentIndex=0;
         listView.setAdapter(adapter);
         listView.setVisibility(View.VISIBLE);
-        listViewButtonClicked=true;}
-        /*if(listViewButtonClicked){
+        if(listViewButtonClicked){
             return;
-        }*/
+        }
     }
+
     private void triggerItemClick(int currentIndex) {
-        // Automatically trigger onItemClick for the item at desiredPosition
+        String selectedListViewItem;
         listView.performItemClick(
                 listView.getChildAt(currentIndex),
                currentIndex,
-                listView.getAdapter().getItemId(currentIndex)
-     );}
+                listView.getAdapter().getItemId(currentIndex));
+                selectedListViewItem= (String) listView.getAdapter().getItem(currentIndex);
+                showToast( "" + selectedListViewItem, Toast.LENGTH_SHORT);
+               }
     public void showToast(final String msg, final int timeStyle) {
         MainActivity.this.runOnUiThread(() -> Toast.makeText(getApplicationContext(), msg, timeStyle).show());
-
     }
 }
